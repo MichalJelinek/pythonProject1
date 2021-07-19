@@ -1,4 +1,3 @@
-
 TEXTS = ['''
 Situated about 10 miles west of Kemmerer, 
 Fossil Butte is a ruggedly impressive 
@@ -28,68 +27,68 @@ which traverse the valley. ''',
          in modern oceans. Other fish such as paddlefish, 
          garpike and stingray are also present.''']
 
-
+# nacteni promenych
 a = 20
 mezera = ' '
-pomlcka = '-'
-delka_pomlcky = 80
-pocet_slov_velky = 0
-pocet_slov_zacetek_velky = 0
-pocet_slov_maly = 0
-pocet_slov_cislice = 0
-soucet = 0
+pomlcka = '-' * 80
+pocet_slov_velky = pocet_slov_zacetek_velky = pocet_slov_maly = pocet_slov_cislice = soucet = 0
+
 uzivatele = {'bob': '123', 'ann': 'pass123', 'mike': 'password123', 'liz': 'pass123'}
 pocet_pismen = {}
 serazeny = {}
 
-
+# zapis do promenych username a password
 username = input("Uzivatelské jméno: ")
 password = input("Heslo: ")
-print(pomlcka * delka_pomlcky)
+print(pomlcka)
 
-if uzivatele.get(username) == (password):
-    print('Welcome to the app, ' + (username) + ' We have 3 texts to be analyzed.')
+if uzivatele.get(username) == password:
+    print('Welcome to the app, ' + username + ' We have 3 texts to be analyzed.')
 
-    print(pomlcka * delka_pomlcky)
+    print(pomlcka)
 
-    number = int(input('Enter a number btw. 1 and 3 to select: '))
+    number = input('Enter a number btw. 1 and 3 to select: ')
 
-    if int(number) < 4 and int(number) > 0:
-        print(pomlcka * delka_pomlcky)
-        rozdeleni_stringu = TEXTS[number - 1].split()
-        pocet_slov = len(rozdeleni_stringu)
-        pocet_slov_4 = 0
+    if number.isnumeric():
+        if 4 > int(number) > 0:
+            print(pomlcka)
 
-        for n in range(pocet_slov):
-            slovo = rozdeleni_stringu[n].strip('.,!:?')
-            if slovo.istitle():
-                pocet_slov_zacetek_velky += 1
-            elif slovo.isupper():
-                pocet_slov_velky += 1
-            elif slovo.islower():
-                pocet_slov_maly += 1
-            elif slovo.isnumeric():
-                pocet_slov_cislice += 1
-                soucet += int(slovo)
-            pocet_pismen[len(slovo)] = pocet_pismen.get(len(slovo), 0) + 1
+            rozdeleni_stringu = TEXTS[int(number) - 1].split()
+            ocisteno = [slovo.strip(".,:?!\n\r ") for slovo in rozdeleni_stringu]
+            ocisteno = [slovo for slovo in ocisteno if slovo]
 
-        print('There are ', (pocet_slov), ' words in the selected text.')
-        print('There are ', (pocet_slov_zacetek_velky), ' titlecase words.')
-        print('There are ', (pocet_slov_velky), ' uppercase words.')
-        print('There are ', (pocet_slov_maly), ' lowercase words.')
-        print('There are ', (pocet_slov_cislice), ' numeric strings.')
-        print('The sum of all the numbers ', (soucet))
-        print(pomlcka * delka_pomlcky)
-        print('LEN|      OCCURENCES       |NR.')
-        print(pomlcka * delka_pomlcky)
+            pocet_slov = len(ocisteno)
 
-        for klic, val in sorted(pocet_pismen.items()):
-            if klic < 10:
-                print('', klic, '|', '*' * val, mezera * (a - val), '|', +val)
-            else:
-                print(klic, '|', '*' * val, mezera * (a - val), '|', +val)
+            for slovo in ocisteno:
+                if slovo.istitle():
+                    pocet_slov_zacetek_velky += 1
+                elif slovo.isupper():
+                    pocet_slov_velky += 1
+                elif slovo.islower():
+                    pocet_slov_maly += 1
+                elif slovo.isnumeric():
+                    pocet_slov_cislice += 1
+                    soucet += int(slovo)
+                pocet_pismen[len(slovo)] = pocet_pismen.get(len(slovo), 0) + 1
+
+            print('There are ', pocet_slov, ' words in the selected text.')
+            print('There are ', pocet_slov_zacetek_velky, ' titlecase words.')
+            print('There are ', pocet_slov_velky, ' uppercase words.')
+            print('There are ', pocet_slov_maly, ' lowercase words.')
+            print('There are ', pocet_slov_cislice, ' numeric strings.')
+            print('The sum of all the numbers ', soucet)
+            print(pomlcka)
+            print('LEN|      OCCURENCES       |NR.')
+            print(pomlcka)
+
+            for klic, val in sorted(pocet_pismen.items()):
+                if klic < 10:
+                    print('', klic, '|', '*' * val, mezera * (a - val), '|', +val)
+                else:
+                    print(klic, '|', '*' * val, mezera * (a - val), '|', +val)
+        else:
+            print('Enter a number btw. 1 and 3, exit')
     else:
         print('Enter a number btw. 1 and 3, exit')
-
 else:
     print('Heslo, nebo uživatelské jméno je špatně!')
